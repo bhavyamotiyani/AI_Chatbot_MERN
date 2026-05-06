@@ -1,0 +1,22 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  {/* Dark warm charcoal background circle/rounded block */}
+  <rect width="100" height="100" rx="24" fill="#1c1917" />
+
+  {/* Robot face base */}
+  <rect x="25" y="32" width="50" height="40" rx="12" fill="#fafaf9" />
+
+  {/* Side communication nodes */}
+  <rect x="21" y="46" width="4" height="12" rx="2" fill="#e7e5e4" />
+  <rect x="75" y="46" width="4" height="12" rx="2" fill="#e7e5e4" />
+
+  {/* Top Antenna receiver */}
+  <rect x="47" y="20" width="6" height="12" rx="3" fill="#e7e5e4" />
+  <circle cx="50" cy="17" r="5" fill="#ef4444" /> {/* Cute glowing red status light */}
+
+  {/* Intelligent digital eyes */}
+  <circle cx="40" cy="48" r="4.5" fill="#1c1917" />
+  <circle cx="60" cy="48" r="4.5" fill="#1c1917" />
+
+  {/* Smiling mouth */}
+  <path d="M42 58 Q 50 64, 58 58" stroke="#1c1917" strokeWidth="3" strokeLinecap="round" fill="none" />
+</svg>
