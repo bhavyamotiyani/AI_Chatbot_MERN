@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
 import AdminDashboard from './AdminDashboard';
 
+// Backend base URL switcher (local development vs production cloud server)
+export const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000'
+  : 'https://ai-chatbot-mern-o0ka.onrender.com';
+
 // Custom text formatter to handle markdown bold, lists, and code blocks
 export function FormattedText({ text }) {
   if (!text) return null;
@@ -179,7 +184,7 @@ function App() {
     const isAdminPath = window.location.pathname === '/admin';
 
     try {
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: username, password: password })
@@ -219,7 +224,7 @@ function App() {
   const fetchHistory = async (user = username) => {
     if (!user) return;
     try {
-      const response = await fetch(`http://localhost:5000/history?username=${user}`);
+      const response = await fetch(`${API_URL}/history?username=${user}`);
       const data = await response.json();
       setHistory(data);
     } catch (error) {
@@ -296,7 +301,7 @@ function App() {
 
     try {
       // Send message to backend with active thread ID if existing
-      const response = await fetch('http://localhost:5000/chat', {
+      const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input, username: username, threadId: currentThreadId })
@@ -331,7 +336,7 @@ function App() {
   const clearHistory = async () => {
     if (window.confirm("Are you sure you want to clear all chat history?")) {
       try {
-        await fetch(`http://localhost:5000/history?username=${username}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/history?username=${username}`, { method: 'DELETE' });
         setHistory([]);
         setMessages([]);
         setCurrentThreadId(null); // Clear current thread
@@ -346,7 +351,7 @@ function App() {
     e.stopPropagation(); // Stop click from loading the chat
     if (window.confirm("Delete this chat?")) {
       try {
-        await fetch(`http://localhost:5000/history/${id}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/history/${id}`, { method: 'DELETE' });
         if (id === currentThreadId) {
           setMessages([]);
           setCurrentThreadId(null); // Reset screen if deleting active chat
@@ -364,7 +369,7 @@ function App() {
     const newTitle = window.prompt("Rename Chat Thread:", currentTitle);
     if (newTitle && newTitle.trim() !== "" && newTitle !== currentTitle) {
       try {
-        const response = await fetch(`http://localhost:5000/history/${id}`, {
+        const response = await fetch(`${API_URL}/history/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title: newTitle.trim() })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FormattedText } from './App';
+import { FormattedText, API_URL } from './App';
 
 // clean minimalist line icons
 const AdminIcon = () => (
@@ -57,11 +57,11 @@ export default function AdminDashboard({ onClose }) {
   // 1. Fetch system statistics and registered users
   const loadAdminData = async () => {
     try {
-      const statsRes = await fetch('http://localhost:5000/admin/stats');
+      const statsRes = await fetch(`${API_URL}/admin/stats`);
       const statsData = await statsRes.json();
       setStats(statsData);
 
-      const usersRes = await fetch('http://localhost:5000/admin/users');
+      const usersRes = await fetch(`${API_URL}/admin/users`);
       const usersData = await usersRes.json();
       setUsers(usersData);
     } catch (err) {
@@ -77,7 +77,7 @@ export default function AdminDashboard({ onClose }) {
   const viewUserChats = async (username) => {
     setSelectedUser(username);
     try {
-      const res = await fetch(`http://localhost:5000/history?username=${username}`);
+      const res = await fetch(`${API_URL}/history?username=${username}`);
       const data = await res.json();
       setUserThreads(data);
     } catch (err) {
@@ -89,7 +89,7 @@ export default function AdminDashboard({ onClose }) {
   const deleteUser = async (username) => {
     if (window.confirm(`Delete user "${username}" and all of their chat logs?`)) {
       try {
-        await fetch(`http://localhost:5000/admin/users/${username}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/admin/users/${username}`, { method: 'DELETE' });
         setSelectedUser(null);
         setUserThreads([]);
         loadAdminData(); // Reload stats and directory
